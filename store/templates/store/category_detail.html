@@ -3,9 +3,14 @@
 
 {% block content %}
 <div class="min-h-screen py-10">
-  <div class="max-w-7xl mx-auto flex">
+  <h1 class="text-3xl font-bold dark:text-white text-center mb-10">Каталог товаров</h1>
+  <!-- Filter button for mobile -->
+  <button id="filter-button" class="lg:hidden bg-[#7a85ff] text-white px-4 py-2 rounded-lg w-full max-w-7xl mx-auto mb-4">
+      Показать фильтры
+  </button>
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row">
     <!-- Фильтры -->
-    <aside class="w-72 mr-8 bg-white dark:bg-[#28303F] rounded-xl p-6 shadow">
+    <aside id="filter-sidebar" class="w-full mb-8 lg:w-72 lg:mr-8 bg-white dark:bg-[#28303F] rounded-xl p-6 shadow hidden lg:block">
       <h2 class="text-black dark:text-white font-bold mb-6 text-lg">Фильтры</h2>
       <form method="get" class="space-y-6">
         <!-- Фильтр по цене -->
@@ -118,6 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Filter button functionality
+    const filterButton = document.getElementById('filter-button');
+    const filterSidebar = document.getElementById('filter-sidebar');
+
+    if (filterButton && filterSidebar) {
+        filterButton.addEventListener('click', () => {
+            filterSidebar.classList.toggle('hidden');
+        });
+    }
 });
 
 function getCookie(name) {
