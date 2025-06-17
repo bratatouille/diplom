@@ -8,3 +8,5 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
+
+/* Удаленные правила для .characteristics-container, так как теперь используется модальное окно */
