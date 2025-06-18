@@ -44,6 +44,9 @@ let allProducts = [];
 let currentFilters = [];
 let currentCategoryId = null;
 
+// Глобальная переменная для состояния чекбокса совместимости
+let compatibleOnlyByCategory = {};
+
 // Загрузка категорий с иконками
 async function loadCategories() {
   const res = await fetch('/pcbuilder/api/categories/');
@@ -125,6 +128,21 @@ function updateFilterSelects() {
   // Сбрасываем подписи
   document.getElementById('filter-1-label').textContent = 'Фильтр 1';
   document.getElementById('filter-2-label').textContent = 'Фильтр 2';
+  
+  // Добавляем чекбокс совместимости, если ещё не добавлен
+  if (!document.getElementById('compatibility-checkbox')) {
+    const clearBtn = document.getElementById('clear-filters');
+    const compatDiv = document.createElement('div');
+    compatDiv.className = 'flex items-center gap-2 ml-4';
+    compatDiv.innerHTML = `<input type="checkbox" id="compatibility-checkbox">
+      <label for="compatibility-checkbox" class="text-sm text-gray-700 dark:text-gray-300 select-none cursor-pointer">Показывать только совместимые</label>`;
+    clearBtn.parentNode.appendChild(compatDiv);
+    document.getElementById('compatibility-checkbox').onchange = (e) => {
+      compatibleOnlyByCategory[currentCategoryId] = e.target.checked;
+      loadProducts();
+    };
+  }
+  document.getElementById('compatibility-checkbox').checked = !!compatibleOnlyByCategory[currentCategoryId];
   
   // Заполняем оба фильтра доступными спецификациями
   currentFilters.forEach(filter => {
@@ -263,6 +281,11 @@ function loadProducts() {
     url += `&filter2_spec=${filter2Select.dataset.spec}&filter2_value=${filter2Select.value}`;
   }
   
+  // Если включён фильтр совместимости (чекбокс) для этой категории
+  if (compatibleOnlyByCategory[currentCategoryId]) {
+    url += `&compatible_only=1`;
+  }
+  
   fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -277,30 +300,85 @@ function loadProducts() {
 function renderProducts(products) {
   const list = document.getElementById('products-list');
   list.innerHTML = '';
-  if (!products.length) {
-    list.innerHTML = '<div class="text-gray-500 dark:text-gray-400 text-center col-span-2">Нет товаров</div>';
+  if (!products || products.length === 0) {
+    list.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Товары не найдены.</p>';
     return;
   }
   products.forEach(prod => {
     const card = document.createElement('div');
-    card.className = 'flex flex-col h-[400px] bg-gray-100 dark:bg-[#181C27] rounded-2xl p-6 shadow relative';
+    card.className = 'flex flex-col bg-gray-100 dark:bg-[#181C27] rounded-2xl p-6 shadow relative';
     card.innerHTML = `
       <div class="w-full h-[160px] bg-gray-200 dark:bg-[#23283a] flex items-center justify-center rounded-xl text-3xl text-[#b0b0b0] dark:text-[#7a8599] font-bold mb-4">
       <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover rounded-xl">
       </div>
-      <div class="flex-1 flex flex-col gap-1 overflow-hidden">
-        <div class="text-lg font-bold text-gray-900 dark:text-white truncate" title="${prod.name}">${prod.name}</div>
+      <div class="flex-1 flex flex-col gap-1">
+        <a href="/catalog/${prod.product_line_slug}/${prod.category_slug}/${prod.product_slug}/" class="text-lg font-bold text-gray-900 dark:text-white hover:underline" title="${prod.name}" target="_blank">${prod.name}</a>
         <div class="text-[#7a85ff] text-base font-semibold mb-1">${prod.price} ₽</div>
-        <div class="flex flex-wrap gap-2 text-xs text-gray-600 dark:text-gray-300 mb-1 max-h-[60px] overflow-y-auto">
-          ${(prod.specs || []).map(s => `<span class="truncate"><span class="font-medium">${s.specification__name}:</span> ${s.value}${s.specification__unit ? ' ' + s.specification__unit : ''}</span>`).join('')}
+        <div class="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300 mb-1 characteristics-container">
+          ${(prod.specs || []).slice(0, 4).map(s => `<span><span class="font-medium">${s.specification__name}:</span> ${s.value}${s.specification__unit ? ' ' + s.specification__unit : ''}</span>`).join('')}
         </div>
       </div>
-      <button class="absolute bottom-6 left-6 right-6 px-6 py-2 rounded-xl text-base font-bold transition-colors ${prod.is_selected ? 'bg-[#7a85ff] text-white cursor-not-allowed' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white'} select-product-btn" data-id="${prod.id}" ${prod.is_selected ? 'disabled' : ''}>${prod.is_selected ? 'Выбрано' : 'Выбрать'}</button>
+      ${(prod.specs && prod.specs.length > 0) ? `<button class="toggle-characteristics-btn rounded-xl px-4 py-2 text-sm font-semibold transition-colors duration-300 mt-2 
+        border border-[#222222] hover:bg-[#e5e7fa] hover:border-gray-500 hover:text-[#7a85ff] text-[#222222] 
+        dark:bg-transparent dark:text-[#FFFFFF] dark:border-[#FFFFFF] dark:hover:border-gray-300 dark:hover:text-[#7a85ff] dark:hover:bg-[#23283a]
+        cursor-pointer focus:outline-none">Характеристики</button>` : ''}
+      <button class="w-full px-6 py-2 rounded-xl text-base font-bold transition-colors select-product-btn mt-4 ${prod.is_selected ? 'bg-red-500 hover:bg-red-700 text-white' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white'}" data-id="${prod.id}">${prod.is_selected ? 'Убрать' : 'Выбрать'}</button>
     `;
-    card.querySelector('.select-product-btn').onclick = () => addToBuild(prod.id);
+    const selectBtn = card.querySelector('.select-product-btn');
+    if (prod.is_selected) {
+      selectBtn.onclick = () => removeFromBuild(prod.id);
+    } else {
+      selectBtn.onclick = () => addToBuild(prod.id);
+    }
+    const toggleBtn = card.querySelector('.toggle-characteristics-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            showCharacteristicsModal(prod.name, prod.specs);
+        });
+    }
     list.appendChild(card);
   });
 }
+
+// Функция для отображения характеристик в модальном окне
+function showCharacteristicsModal(productName, specs) {
+  const modal = document.getElementById('characteristics-modal');
+  const modalProductName = document.getElementById('modal-product-name');
+  const modalCharacteristicsList = document.getElementById('modal-characteristics-list');
+
+  modalProductName.textContent = `Характеристики: ${productName}`;
+  modalCharacteristicsList.innerHTML = '';
+
+  if (specs && specs.length > 0) {
+    specs.forEach(s => {
+      const p = document.createElement('p');
+      p.className = 'text-gray-700 dark:text-gray-200 mb-2';
+      p.innerHTML = `<span class="font-medium">${s.specification__name}:</span> ${s.value}${s.specification__unit ? ' ' + s.specification__unit : ''}`;
+      modalCharacteristicsList.appendChild(p);
+    });
+  } else {
+    modalCharacteristicsList.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Характеристики не найдены.</p>';
+  }
+
+  modal.classList.remove('hidden');
+}
+
+// Закрытие модального окна
+document.addEventListener('DOMContentLoaded', () => {
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const modal = document.getElementById('characteristics-modal');
+
+  if (closeModalBtn && modal) {
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  }
+});
 
 // Загрузка сборки
 async function loadBuild() {
@@ -365,7 +443,7 @@ async function removeFromBuild(productId) {
   });
   const data = await res.json();
   if (data.success) {
-    showToast('Компонент удалён');
+    showToast('Компонент удалён', 'error');
     loadBuild();
     loadProducts();
   } else {

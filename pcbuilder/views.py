@@ -66,6 +66,7 @@ def api_products(request):
     filter1_value = request.GET.get('filter1_value')  # Значение
     filter2_spec = request.GET.get('filter2_spec')
     filter2_value = request.GET.get('filter2_value')
+    compatible_only = request.GET.get('compatible_only') == '1'
     
     if not category_id:
         return JsonResponse({'products': []})
@@ -85,8 +86,24 @@ def api_products(request):
             specs__value=filter2_value
         )
     
+    # Получаем выбранные продукты для текущей сборки пользователя
+    build, _ = PCBuild.objects.get_or_create(user=request.user)
+    selected_product_ids = set(build.components.values_list('product_id', flat=True))
+    
+    # Фильтрация по совместимости
+    if compatible_only:
+        compatible_products = []
+        for product in products.distinct():
+            # Проверяем совместимость с текущей сборкой
+            ok, _ = check_compatibility(build, product)
+            if ok:
+                compatible_products.append(product)
+        products = compatible_products
+    else:
+        products = products.distinct()
+    
     result = []
-    for product in products.distinct():
+    for product in products:
         specs = list(product.specs.select_related('specification').values(
             'specification__name', 'value', 'specification__unit'))
         result.append({
@@ -95,6 +112,10 @@ def api_products(request):
             'price': float(product.price),
             'image': product.image.url if product.image else '',
             'specs': specs,
+            'is_selected': product.id in selected_product_ids,
+            'product_line_slug': product.category.product_line.slug,
+            'category_slug': product.category.slug,
+            'product_slug': product.slug,
         })
     
     return JsonResponse({'products': result})

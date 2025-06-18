@@ -44,6 +44,9 @@ let allProducts = [];
 let currentFilters = [];
 let currentCategoryId = null;
 
+// Глобальная переменная для состояния чекбокса совместимости
+let compatibleOnlyByCategory = {};
+
 // Загрузка категорий с иконками
 async function loadCategories() {
   const res = await fetch('/pcbuilder/api/categories/');
@@ -125,6 +128,21 @@ function updateFilterSelects() {
   // Сбрасываем подписи
   document.getElementById('filter-1-label').textContent = 'Фильтр 1';
   document.getElementById('filter-2-label').textContent = 'Фильтр 2';
+  
+  // Добавляем чекбокс совместимости, если ещё не добавлен
+  if (!document.getElementById('compatibility-checkbox')) {
+    const clearBtn = document.getElementById('clear-filters');
+    const compatDiv = document.createElement('div');
+    compatDiv.className = 'flex items-center gap-2 ml-4';
+    compatDiv.innerHTML = `<input type="checkbox" id="compatibility-checkbox">
+      <label for="compatibility-checkbox" class="text-sm text-gray-700 dark:text-gray-300 select-none cursor-pointer">Показывать только совместимые</label>`;
+    clearBtn.parentNode.appendChild(compatDiv);
+    document.getElementById('compatibility-checkbox').onchange = (e) => {
+      compatibleOnlyByCategory[currentCategoryId] = e.target.checked;
+      loadProducts();
+    };
+  }
+  document.getElementById('compatibility-checkbox').checked = !!compatibleOnlyByCategory[currentCategoryId];
   
   // Заполняем оба фильтра доступными спецификациями
   currentFilters.forEach(filter => {
@@ -263,6 +281,11 @@ function loadProducts() {
     url += `&filter2_spec=${filter2Select.dataset.spec}&filter2_value=${filter2Select.value}`;
   }
   
+  // Если включён фильтр совместимости (чекбокс) для этой категории
+  if (compatibleOnlyByCategory[currentCategoryId]) {
+    url += `&compatible_only=1`;
+  }
+  
   fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -289,21 +312,24 @@ function renderProducts(products) {
       <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover rounded-xl">
       </div>
       <div class="flex-1 flex flex-col gap-1">
-        <div class="text-lg font-bold text-gray-900 dark:text-white" title="${prod.name}">${prod.name}</div>
+        <a href="/catalog/${prod.product_line_slug}/${prod.category_slug}/${prod.product_slug}/" class="text-lg font-bold text-gray-900 dark:text-white hover:underline" title="${prod.name}" target="_blank">${prod.name}</a>
         <div class="text-[#7a85ff] text-base font-semibold mb-1">${prod.price} ₽</div>
         <div class="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300 mb-1 characteristics-container">
           ${(prod.specs || []).slice(0, 4).map(s => `<span><span class="font-medium">${s.specification__name}:</span> ${s.value}${s.specification__unit ? ' ' + s.specification__unit : ''}</span>`).join('')}
         </div>
       </div>
-      ${(prod.specs && prod.specs.length > 0) ? `<button class=\"toggle-characteristics-btn rounded-xl px-4 py-2 text-sm font-semibold transition-colors duration-300 mt-2 
+      ${(prod.specs && prod.specs.length > 0) ? `<button class="toggle-characteristics-btn rounded-xl px-4 py-2 text-sm font-semibold transition-colors duration-300 mt-2 
         border border-[#222222] hover:bg-[#e5e7fa] hover:border-gray-500 hover:text-[#7a85ff] text-[#222222] 
         dark:bg-transparent dark:text-[#FFFFFF] dark:border-[#FFFFFF] dark:hover:border-gray-300 dark:hover:text-[#7a85ff] dark:hover:bg-[#23283a]
-        cursor-pointer focus:outline-none\">
-        Характеристики
-      </button>` : ''}
-      <button class="w-full px-6 py-2 rounded-xl text-base font-bold transition-colors ${prod.is_selected ? 'bg-[#7a85ff] text-white cursor-not-allowed' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white'} select-product-btn mt-4" data-id="${prod.id}" ${prod.is_selected ? 'disabled' : ''}>${prod.is_selected ? 'Выбрано' : 'Выбрать'}</button>
+        cursor-pointer focus:outline-none">Характеристики</button>` : ''}
+      <button class="w-full px-6 py-2 rounded-xl text-base font-bold transition-colors select-product-btn mt-4 ${prod.is_selected ? 'bg-red-500 hover:bg-red-700 text-white' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white'}" data-id="${prod.id}">${prod.is_selected ? 'Убрать' : 'Выбрать'}</button>
     `;
-    card.querySelector('.select-product-btn').onclick = () => addToBuild(prod.id);
+    const selectBtn = card.querySelector('.select-product-btn');
+    if (prod.is_selected) {
+      selectBtn.onclick = () => removeFromBuild(prod.id);
+    } else {
+      selectBtn.onclick = () => addToBuild(prod.id);
+    }
     const toggleBtn = card.querySelector('.toggle-characteristics-btn');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
@@ -417,7 +443,7 @@ async function removeFromBuild(productId) {
   });
   const data = await res.json();
   if (data.success) {
-    showToast('Компонент удалён');
+    showToast('Компонент удалён', 'error');
     loadBuild();
     loadProducts();
   } else {

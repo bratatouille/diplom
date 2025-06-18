@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import ProductLine, Category, Product, Specification, ProductSpec
 from collections import defaultdict
 from decimal import Decimal
+from django.urls import reverse
 # Create your views here.
 def index(request):
     return render(request, 'store/index.html')
@@ -105,6 +106,12 @@ def product_detail(request, product_line_slug, category_slug, product_slug):
     if request.user.is_authenticated:
         cart_product_ids = list(request.user.cart_items.values_list('product_id', flat=True))
         wishlist_product_ids = list(request.user.favorite_items.values_list('product_id', flat=True))
+    breadcrumbs = [
+        ('Каталог', reverse('store:catalog')),
+        ('Товары', reverse('store:product_line_detail', args=[product_line.slug])),
+        (category.name, reverse('store:category_detail', args=[product_line.slug, category.slug])),
+        (product.name, None),
+    ]
     return render(request, 'store/product_detail.html', {
         'product': product,
         'images': images,
@@ -113,4 +120,15 @@ def product_detail(request, product_line_slug, category_slug, product_slug):
         'product_line': product_line,
         'cart_product_ids': cart_product_ids,
         'wishlist_product_ids': wishlist_product_ids,
+        'breadcrumbs': breadcrumbs,
+    })
+
+def product_line_detail(request, product_line_slug):
+    product_line = get_object_or_404(ProductLine, slug=product_line_slug)
+    categories = product_line.categories.all()
+    products = Product.objects.filter(category__in=categories).prefetch_related('images')
+    return render(request, 'store/product_line_detail.html', {
+        'product_line': product_line,
+        'categories': categories,
+        'products': products,
     })
