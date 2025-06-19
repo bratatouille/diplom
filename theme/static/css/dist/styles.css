@@ -321,12 +321,6 @@
   .right-4 {
     right: calc(var(--spacing) * 4);
   }
-  .right-6 {
-    right: calc(var(--spacing) * 6);
-  }
-  .bottom-6 {
-    bottom: calc(var(--spacing) * 6);
-  }
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
@@ -335,9 +329,6 @@
   }
   .left-3 {
     left: calc(var(--spacing) * 3);
-  }
-  .left-6 {
-    left: calc(var(--spacing) * 6);
   }
   .left-12 {
     left: calc(var(--spacing) * 12);
@@ -350,9 +341,6 @@
   }
   .z-50 {
     z-index: 50;
-  }
-  .col-span-2 {
-    grid-column: span 2 / span 2;
   }
   .col-span-full {
     grid-column: 1 / -1;
@@ -556,17 +544,11 @@
   .h-\[220px\] {
     height: 220px;
   }
-  .h-\[400px\] {
-    height: 400px;
-  }
   .h-\[420px\] {
     height: 420px;
   }
   .h-full {
     height: 100%;
-  }
-  .max-h-\[60px\] {
-    max-height: 60px;
   }
   .max-h-\[70vh\] {
     max-height: 70vh;
@@ -1467,11 +1449,6 @@
     }
   }
   @media (hover: hover) {
-    .hover\:bg-\[\#7a85ff\]:hover {
-      background-color: #7a85ff;
-    }
-  }
-  @media (hover: hover) {
     .hover\:bg-\[\#e5e7fa\]:hover {
       background-color: #e5e7fa;
     }
@@ -1559,11 +1536,6 @@
   @media (hover: hover) {
     .hover\:text-red-700:hover {
       color: var(--color-red-700);
-    }
-  }
-  @media (hover: hover) {
-    .hover\:text-white:hover {
-      color: var(--color-white);
     }
   }
   @media (hover: hover) {
@@ -1855,6 +1827,11 @@
   @media (width >= 80rem) {
     .xl\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 80rem) {
+    .xl\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   .dark\:border-\[\#2e3743\]:where(.dark, .dark *) {
