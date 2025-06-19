@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-   <!-- Hero Carousel -->
+   <!-- Слайдеры -->
     <section class="relative py-12">
         <div class="container mx-auto px-4 relative">
             <div class="carousel-container relative h-80 rounded-xl overflow-hidden">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 {% endfor %}
-                <!-- Arrows -->
+                <!-- Стрелки -->
                 <button class="carousel-arrow left-2 top-1/2 -translate-y-1/2 absolute z-20 bg-white/70 hover:bg-white text-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow transition" id="carousel-prev" aria-label="Предыдущий слайд">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                 </button>
@@ -34,7 +34,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                 </button>
             </div>
-            <!-- Carousel Navigation -->
+            <!-- Навигация по кружочкам -->
             <div class="flex justify-center space-x-2 mt-6">
                 <button class="carousel-dot w-3 h-3 rounded-full bg-blue-500 transition-all duration-300" data-slide="0" aria-label="Слайд 1"></button>
                 <button class="carousel-dot w-3 h-3 rounded-full bg-gray-500 hover:bg-gray-400 transition-all duration-300" data-slide="1" aria-label="Слайд 2"></button>
@@ -43,7 +43,7 @@
         </div>
     </section>
 
-    <!-- Popular Products -->
+    <!-- Популярные товарыф-->
     <section class="py-12 bg-white dark:bg-[#1a2230]">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">Популярные товары</h2>
@@ -57,28 +57,28 @@
         </div>
     </section>
 
-    <!-- Gaming PC Section -->
-    <section class="py-12 bg-white dark:bg-[#1a2230]">
+    <!-- Готовые пк -->
+    <section class="py-12 bg-[#FFDDDD] dark:bg-[#28303F]">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row items-center gap-8">
                 <div class="flex-1">
                     <div class="grid grid-cols-3 gap-4">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='120' viewBox='0 0 150 120'%3E%3Crect width='130' height='100' x='10' y='10' rx='8' fill='%2306b6d4' opacity='0.3'/%3E%3Crect width='110' height='70' x='20' y='25' rx='4' fill='%23ffffff' opacity='0.1'/%3E%3C/svg%3E" alt="PC Case 1" class="w-full rounded-lg">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='120' viewBox='0 0 150 120'%3E%3Crect width='130' height='100' x='10' y='10' rx='8' fill='%23ef4444' opacity='0.4'/%3E%3Crect width='110' height='70' x='20' y='25' rx='4' fill='%23000000' opacity='0.6'/%3E%3C/svg%3E" alt="PC Case 2" class="w-full rounded-lg">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='120' viewBox='0 0 150 120'%3E%3Crect width='130' height='100' x='10' y='10' rx='8' fill='%23374151' opacity='0.8'/%3E%3Crect width='110' height='70' x='20' y='25' rx='4' fill='%23111827'/%3E%3C/svg%3E" alt="PC Case 3" class="w-full rounded-lg">
+                        <img src="https://nemifist.ru/image/cache/catalog/image/catalog/front-menu-cards/card-2.webp" alt="Картинка ПК1" class="w-full rounded-lg">
+                        <img src="https://ae04.alicdn.com/kf/S889cbcdc2ab84258bb4c5bb78bf68c3an.jpg_480x480.jpg" alt="Картинка ПК2" class="w-full rounded-lg">
+                        <img src="https://static.vecteezy.com/system/resources/previews/048/412/757/non_2x/modern-gaming-pc-isolated-on-transparent-free-png.png" alt="Картинка ПК3" class="w-full rounded-lg">
                     </div>
                 </div>
                 <div class="flex-1">
-                    <h2 class="text-4xl font-bold text-black dark:text-white mb-4">Готовый игровой ПК</h2>
-                    <p class="text-lg text-[#b0b0b0] dark:text-[#7a8599] mb-6">Лучшие игровые решения от бюджетных до профессиональных персональных компьютеров</p>
+                    <h2 class="text-4xl font-bold text-black dark:text-white mb-4">Готовые ПК под любые задачи</h2>
+                    <p class="text-lg text-[#b0b0b0] dark:text-[#7a8599] mb-6">Лучшие решения от фоисных до профессиональных</p>
                     <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-8 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'core:computer_catalog' %}">КУПИТЬ СЕЙЧАС</a></button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PC Configurator -->
-    <section class="py-12 bg-[#e5e7eb] dark:bg-[#23283a]">
+    <!-- Конфигуратор -->
+    <section class="py-12 bg-[#D9FBFA] dark:bg-[#23283a]">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row items-center gap-8">
                 <div class="flex-1">
@@ -87,37 +87,37 @@
                     <button class="bg-white text-[#7a85ff] hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'pcbuilder:pcbuilder' %}">СОБРАТЬ ПК</a></button>
                 </div>
                 <div class="flex-1">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='350' height='200' x='25' y='50' rx='15' fill='%23dc2626' opacity='0.8'/%3E%3Crect width='60' height='40' x='50' y='80' rx='8' fill='%23ffffff' opacity='0.9'/%3E%3Ctext x='80' y='105' text-anchor='middle' fill='%23000000' font-size='8' font-family='Arial'%3EMSI%3C/text%3E%3Crect width='200' height='80' x='130' y='120' rx='8' fill='%23000000' opacity='0.7'/%3E%3Crect width='80' height='30' x='290' y='90' rx='5' fill='%2310b981' opacity='0.8'/%3E%3C/svg%3E" alt="PC Components" class="w-full rounded-lg">
+                    <img src="https://shop.proskill.kz/wp-content/uploads/2020/09/pc_0-e1599200559537.png" alt="Картинка конфигуратора" class="w-full rounded-lg">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Categories -->
-    <section class="py-12 bg-white dark:bg-[#1a2230]">
+    <!-- Категории -->
+    <section class="py-12 bg-[#E2F0FF] dark:bg-[#1a2230]">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-black dark:text-white mb-4">КОМПЛЕКТУЮЩИЕ</h3>
                     <p class="text-[#b0b0b0] dark:text-[#7a8599] mb-6">Процессоры всех самых современных марок-производителей, видеокарты, материнские платы и многое другое</p>
-                    <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:catalog' %}">КУПИТЬ СЕЙЧАС</a></button>
+                    <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:product_line_detail' 'komplektuyushchie' %}">КУПИТЬ СЕЙЧАС</a></button>
                     <div class="mt-6">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='80' height='60' x='20' y='70' rx='8' fill='%2306b6d4' opacity='0.6'/%3E%3Crect width='80' height='60' x='110' y='70' rx='8' fill='%23ef4444' opacity='0.6'/%3E%3Crect width='80' height='60' x='200' y='70' rx='8' fill='%2310b981' opacity='0.6'/%3E%3C/svg%3E" alt="Components" class="w-full rounded-lg">
+                        <img src="https://www.hardwareluxx.de/images/cdn02/uploads/2023/Jul/soft_network_jj/mainboard_faq_2023_002_1920px.png" alt="Картинка материнская плата" class="w-full rounded-lg">
                     </div>
                 </div>
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-black dark:text-white mb-4">КОМПЬЮТЕРНАЯ ПЕРИФЕРИЯ</h3>
                     <p class="text-[#b0b0b0] dark:text-[#7a8599] mb-6">Вооружитесь с самым лучшим в мире оружием геймера и аксессуарами: мониторы, клавиатуры и многое другое</p>
-                    <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:catalog' %}">КУПИТЬ СЕЙЧАС</a></button>
+                    <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:product_line_detail' 'pereferiya' %}">КУПИТЬ СЕЙЧАС</a></button>
                     <div class="mt-6">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='120' height='80' x='20' y='60' rx='12' fill='%23374151' opacity='0.8'/%3E%3Crect width='100' height='60' x='30' y='70' rx='8' fill='%23000000'/%3E%3Crect width='80' height='20' x='160' y='120' rx='10' fill='%23065f46' opacity='0.8'/%3E%3Ccircle cx='260' cy='130' r='25' fill='%23475569' opacity='0.7'/%3E%3C/svg%3E" alt="Peripherals" class="w-full rounded-lg">
+                        <img src="https://www.jetaccess.ru/upload/resizer2/8/aa6/aa65f2e4a81d9df7633465f52ccbc746.png" alt="Картинка периферия" class="w-full rounded-lg">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Advantages -->
+    <!-- Преимущества -->
     <section class="py-12 bg-[#e5e7eb] dark:bg-[#23283a]">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-black dark:text-white text-center mb-12">Наши преимущества</h2>
@@ -147,8 +147,8 @@
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="py-12 bg-gradient-to-r from-blue-600 to-purple-600">
+    <!-- Промокод-->
+    <section class="py-12 bg-gradient-to-r from-blue-600 to-purple-600" >
         <div class="container mx-auto px-4 flex flex-col items-center justify-center">
             <div class="max-w-2xl w-full mx-auto bg-white/90 dark:bg-[#23283a]/90 rounded-2xl shadow-xl p-10 flex flex-col items-center">
                 <div class="bg-[#7a85ff] text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">Только сейчас</div>

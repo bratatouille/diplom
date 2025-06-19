@@ -127,10 +127,62 @@
                            class="w-full bg-[#7a85ff] hover:bg-[#4b1bb3] text-white py-3 rounded-xl text-center font-bold transition-colors block">
                             Все заказы
                         </a>
+                        {% if order.status == 'pending' or order.status == 'processing' %}
+                        <button id="cancel-order-btn" type="button"
+                            class="w-full mt-3 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl text-center font-bold transition-colors block">
+                            Отменить заказ
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+{% if order.status == 'pending' or order.status == 'processing' %}
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+document.getElementById('cancel-order-btn').addEventListener('click', async function() {
+    if (!confirm('Вы уверены, что хотите отменить этот заказ?')) return;
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Отмена...';
+    try {
+        const response = await fetch(`/orders/{{ order.id }}/cancel/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.error || 'Не удалось отменить заказ');
+            btn.disabled = false;
+            btn.textContent = 'Отменить заказ';
+        }
+    } catch (error) {
+        alert('Ошибка при отмене заказа. Попробуйте позже.');
+        btn.disabled = false;
+        btn.textContent = 'Отменить заказ';
+    }
+});
+</script>
+{% endif %}
 {% endblock %}

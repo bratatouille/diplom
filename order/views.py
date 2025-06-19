@@ -223,3 +223,20 @@ def order_detail(request, order_id):
     }
     
     return render(request, 'order/order_detail.html', context)
+
+@require_POST
+@login_required
+def cancel_order(request, order_id):
+    """Отмена заказа пользователем, если статус позволяет"""
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    if order.status not in ['pending', 'processing']:
+        return JsonResponse({'success': False, 'error': 'Заказ уже нельзя отменить.'}, status=400)
+    order.status = 'cancelled'
+    order.save()
+    OrderStatusHistory.objects.create(
+        order=order,
+        status='cancelled',
+        comment='Заказ отменён пользователем',
+        created_by=request.user
+    )
+    return JsonResponse({'success': True, 'message': 'Заказ успешно отменён.'})

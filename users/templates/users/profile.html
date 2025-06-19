@@ -18,16 +18,16 @@
                     </div>
 
                     <nav class="space-y-2">
-                        <button onclick="showSection('personal-info')" class="block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300">
+                        <button onclick="showSection('personal-info')" class="menu-item block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300" data-section="personal-info">
                             Личная информация
                         </button>
-                        <button onclick="showSection('order-history')" class="block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300">
+                        <button onclick="showSection('order-history')" class="menu-item block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300" data-section="order-history">
                             История заказов
                         </button>
-                        <button onclick="showSection('promocodes')" class="block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300">
+                        <button onclick="showSection('promocodes')" class="menu-item block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300" data-section="promocodes">
                             Промокоды
                         </button>
-                        <button onclick="showSection('configurations')" class="block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300">
+                        <button onclick="showSection('configurations')" class="menu-item block w-full px-4 py-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-[#1E242E] text-gray-700 dark:text-gray-300" data-section="configurations">
                             Мои конфигурации
                         </button>
                     </nav>
@@ -189,25 +189,24 @@
 
 <script>
 function showSection(sectionId) {
+    // Сохраняем выбранную секцию в localStorage
+    localStorage.setItem('profileActiveSection', sectionId);
     // Скрываем все секции
     document.querySelectorAll('.section-content').forEach(section => {
         section.classList.add('hidden');
     });
-    
     // Показываем выбранную секцию
     const section = document.getElementById(sectionId);
-    section.classList.remove('hidden');
-
+    if (section) section.classList.remove('hidden');
     // Подсвечиваем активный пункт в меню
     document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('bg-blue-600', 'text-white');
+        item.classList.remove('bg-gray-600', 'text-white');
         item.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-[#1E242E]');
         if (item.getAttribute('data-section') === sectionId) {
-            item.classList.add('bg-blue-600', 'text-white');
+            item.classList.add('bg-gray-600', 'text-white');
             item.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-[#1E242E]');
         }
     });
-    
     // Загружаем данные для соответствующих секций
     if (sectionId === 'configurations') {
         loadUserConfigurations();
@@ -844,6 +843,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Найдено пунктов меню:', menuItems.length);
     console.log('Найдено секций:', sections.length);
 
+    // Восстанавливаем активную секцию из localStorage
+    const savedSection = localStorage.getItem('profileActiveSection');
+    let sectionToShow = savedSection;
+    // Если сохранённой секции нет или она не существует, показываем первую
+    if (!sectionToShow || !document.getElementById(sectionToShow)) {
+        sectionToShow = menuItems.length > 0 ? menuItems[0].getAttribute('data-section') : null;
+    }
+    if (sectionToShow) {
+        showSection(sectionToShow);
+    }
+    // Навешиваем обработчики на меню (на случай если они нужны)
     menuItems.forEach(item => {
         item.addEventListener('click', function(event) {
             // event.preventDefault(); // Если это ссылки, чтобы не переходить по ним
@@ -851,12 +861,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showSection(targetSectionId);
         });
     });
-    
-    // Активируем первую секцию по умолчанию
-    if (menuItems.length > 0) {
-        console.log('Активируем первую секцию по умолчанию');
-        showSection(menuItems[0].getAttribute('data-section'));
-    }
 });
 </script>
 {% endblock %}
