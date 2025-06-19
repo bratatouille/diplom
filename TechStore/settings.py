@@ -26,6 +26,17 @@ SECRET_KEY = 'django-insecure-cm@-da8=3-$03@5t)-pxxxcx87)0lu)tj*+!kap2z#ix^qg(e1
 DEBUG = True
 
 ALLOWED_HOSTS = ['diplom-vgw4.onrender.com', 'localhost', '127.0.0.1']
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 4000
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 
 # Application definition
