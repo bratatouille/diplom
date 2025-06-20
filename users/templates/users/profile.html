@@ -819,18 +819,54 @@ function renderOrders(orders) {
                     `).join('') : '<p class="text-sm text-gray-500 dark:text-gray-400">Товары не найдены</p>'}
                 </div>
                 
-                <!-- Кнопка подробнее -->
-                <div class="mt-4 text-center">
+                <!-- Кнопка подробнее и отмены заказа -->
+                <div class="mt-4 flex flex-row gap-2 justify-center items-center">
                     <a href="/orders/${order.id}/" 
-                       class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1E242E] hover:bg-gray-50 dark:hover:bg-[#28303F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1E242E] hover:bg-gray-50 dark:hover:bg-[#28303F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                         Подробнее о заказе
                     </a>
+                    ${['pending', 'processing'].includes(order.status) ? `
+                        <button class="cancel-order-btn inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" data-order-id="${order.id}">
+                            Отменить заказ
+                        </button>
+                    ` : ''}
                 </div>
             </div>
         </div>
     `).join('');
     
-    console.log('HTML заказов сгенерирован, длина:', container.innerHTML.length);
+    // Навешиваем обработчик на кнопки отмены заказа
+    const cancelButtons = container.querySelectorAll('.cancel-order-btn');
+    cancelButtons.forEach(btn => {
+        btn.addEventListener('click', async function() {
+            if (!confirm('Вы уверены, что хотите отменить этот заказ?')) return;
+            const orderId = this.getAttribute('data-order-id');
+            this.disabled = true;
+            this.textContent = 'Отмена...';
+            try {
+                const response = await fetch(`/orders/${orderId}/cancel/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Перезагрузить список заказов
+                    location.reload();
+                } else {
+                    alert(data.error || 'Не удалось отменить заказ');
+                    this.disabled = false;
+                    this.textContent = 'Отменить заказ';
+                }
+            } catch (error) {
+                alert('Ошибка при отмене заказа. Попробуйте позже.');
+                this.disabled = false;
+                this.textContent = 'Отменить заказ';
+            }
+        });
+    });
 }
 
 // Обновляем обработчик переключения секций с улучшенной отладкой

@@ -424,6 +424,7 @@ async function addToBuild(productId) {
   const data = await res.json();
   if (data.success) {
     showToast('Компонент добавлен');
+    lastSavedBuildId = null;
     loadBuild();
     loadProducts();
   } else {
@@ -444,6 +445,7 @@ async function removeFromBuild(productId) {
   const data = await res.json();
   if (data.success) {
     showToast('Компонент удалён', 'error');
+    lastSavedBuildId = null;
     loadBuild();
     loadProducts();
   } else {
@@ -451,20 +453,56 @@ async function removeFromBuild(productId) {
   }
 }
 
-// Сохранить сборку
-async function saveBuild() {
+// Модальное окно для ввода имени сборки
+function showSaveBuildModal() {
+  let modal = document.getElementById('save-build-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'save-build-modal';
+    modal.className = 'fixed inset-0 bg-black/30 flex items-center justify-center z-50';
+    modal.innerHTML = `
+      <div class="bg-white dark:bg-[#28303F] rounded-lg shadow-xl max-w-md w-full p-6 relative">
+        <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-3xl font-bold" id="close-save-build-modal">&times;</button>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Сохранить сборку</h3>
+        <form id="save-build-form" class="flex flex-col gap-4">
+          <input type="text" name="build_name" class="px-4 py-2 border rounded" placeholder="Название сборки" required maxlength="255">
+          <div class="flex gap-2 justify-end">
+            <button type="submit" class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-2 rounded-lg font-semibold">Сохранить</button>
+            <button type="button" id="cancel-save-build" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg font-semibold">Отмена</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('close-save-build-modal').onclick = hideSaveBuildModal;
+    document.getElementById('cancel-save-build').onclick = hideSaveBuildModal;
+    document.getElementById('save-build-form').onsubmit = saveBuildWithName;
+  }
+  modal.classList.remove('hidden');
+}
+
+function hideSaveBuildModal() {
+  const modal = document.getElementById('save-build-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function saveBuildWithName(e) {
+  e.preventDefault();
+  const name = e.target.build_name.value.trim();
+  if (!name) return;
   const res = await fetch('/pcbuilder/api/build/save/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken')
     },
-    body: JSON.stringify({ name: 'Моя сборка' })
+    body: JSON.stringify({ name })
   });
   const data = await res.json();
   if (data.success) {
     showToast('Сборка сохранена!');
     lastSavedBuildId = data.build_id;
+    hideSaveBuildModal();
   } else {
     showToast(data.error || 'Ошибка', 'error');
   }
@@ -476,6 +514,7 @@ async function addBuildToCart() {
     showToast('Сначала сохраните сборку', 'error');
     return;
   }
+  // Сохранённая сборка — добавляем по id
   const res = await fetch('/pcbuilder/api/build/add_to_cart/', {
     method: 'POST',
     headers: {
@@ -542,6 +581,8 @@ async function loadSavedConfigAndApply(configId) {
     });
   }
 
+  lastSavedBuildId = config.id;
+
   showToast('Конфигурация загружена!');
   loadBuild();
 
@@ -558,7 +599,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   loadBuild();
   setupFilterHandlers();
   
-  document.getElementById('save-build-btn').onclick = saveBuild;
+  document.getElementById('save-build-btn').onclick = showSaveBuildModal;
   document.getElementById('add-to-cart-btn').onclick = addBuildToCart;
 
   const configId = getUrlParam('load_config');

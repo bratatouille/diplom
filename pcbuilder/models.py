@@ -44,12 +44,12 @@ class CompatibilityRule(models.Model):
         ('>', 'Больше'),
         ('>=', 'Больше или равно'),
     ]
-    category1 = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='compat_rules_1', verbose_name='Категория 1')
-    spec1 = models.ForeignKey(Specification, on_delete=models.CASCADE, related_name='compat_rules_1', verbose_name='Характеристика 1')
-    operator = models.CharField('Оператор', max_length=2, choices=OPERATOR_CHOICES)
-    category2 = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='compat_rules_2', verbose_name='Категория 2')
-    spec2 = models.ForeignKey(Specification, on_delete=models.CASCADE, related_name='compat_rules_2', verbose_name='Характеристика 2')
-    error_message = models.CharField('Сообщение об ошибке', max_length=255)
+    category1 = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='compat_rules_1', verbose_name='Категория 1', blank=True, null=True)
+    spec1 = models.ForeignKey(Specification, on_delete=models.CASCADE, related_name='compat_rules_1', verbose_name='Характеристика 1', blank=True, null=True)
+    operator = models.CharField('Оператор', max_length=2, choices=OPERATOR_CHOICES, blank=True, null=True)
+    category2 = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='compat_rules_2', verbose_name='Категория 2', blank=True, null=True)
+    spec2 = models.ForeignKey(Specification, on_delete=models.CASCADE, related_name='compat_rules_2', verbose_name='Характеристика 2', blank=True, null=True)
+    error_message = models.CharField('Сообщение об ошибке', max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Правило совместимости'
