@@ -81,13 +81,14 @@ def get_user_promocodes(request):
         
         # Получаем все персональные промокоды пользователя через связующую модель
         personal_promo_ids = UserPromoCode.objects.filter(user=user).values_list('promocode_id', flat=True)
-        
-        # Получаем все общие (не персональные) активные промокоды
-        public_promos = PromoCode.objects.filter(allowed_users__isnull=True)
-        
-        # Получаем объекты персональных промокодов
-        personal_promos = PromoCode.objects.filter(id__in=personal_promo_ids)
-
+        # Получаем все общие (не персональные и не email) активные промокоды
+        public_promos = PromoCode.objects.filter(
+            allowed_users__isnull=True,
+            is_personal=False,
+            is_email=False
+        )
+        # Получаем объекты персональных промокодов (назначенных этому пользователю)
+        personal_promos = PromoCode.objects.filter(id__in=personal_promo_ids, is_personal=True)
         # Объединяем все релевантные промокоды в один запрос, чтобы избежать дублирования
         all_relevant_promos = (public_promos | personal_promos).distinct().prefetch_related('allowed_categories')
         

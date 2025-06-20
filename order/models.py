@@ -104,8 +104,8 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     """Товары в заказе"""
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, verbose_name='Заказ', on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.CASCADE)
     product_name = models.CharField('Название товара', max_length=200)  # На случай если товар удалят
     product_price = models.DecimalField('Цена за единицу', max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField('Количество')
@@ -126,7 +126,7 @@ class OrderItem(models.Model):
 
 class OrderStatusHistory(models.Model):
     """История изменения статусов заказа"""
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
+    order = models.ForeignKey(Order, verbose_name='Заказ', on_delete=models.CASCADE, related_name='status_history')
     status = models.CharField('Статус', max_length=20, choices=Order.STATUS_CHOICES)
     comment = models.TextField('Комментарий', blank=True)
     created_at = models.DateTimeField('Дата изменения', auto_now_add=True)

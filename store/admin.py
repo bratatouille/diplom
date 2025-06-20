@@ -197,9 +197,9 @@ class PromoCodeUsageInline(admin.TabularInline):
 class PromoCodeAdmin(admin.ModelAdmin):
     list_display = (
         'code', 'name', 'discount_display', 'status', 'usage_display', 
-        'start_date', 'end_date', 'is_active_now'
+        'start_date', 'end_date', 'is_active_now', 'is_personal', 'is_email'
     )
-    list_filter = ('status', 'discount_type', 'start_date', 'end_date')
+    list_filter = ('status', 'discount_type', 'start_date', 'end_date', 'is_personal', 'is_email')
     search_fields = ('code', 'name', 'description')
     readonly_fields = ('used_count', 'created_at', 'updated_at')
     filter_horizontal = ('allowed_users', 'allowed_categories')
@@ -207,7 +207,7 @@ class PromoCodeAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Основная информация', {
-            'fields': ('code', 'name', 'description', 'status')
+            'fields': ('code', 'name', 'description', 'status', 'is_personal', 'is_email')
         }),
         ('Скидка', {
             'fields': ('discount_type', 'discount_value', 'max_discount_amount')
