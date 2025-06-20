@@ -387,6 +387,3 @@ def get_products_by_category(request):
         return JsonResponse({'products': list(products)})
     return JsonResponse({'products': []})
 
-def pc_builder_view(request):
-    # Ваш существующий код...
-    pass
