@@ -139,7 +139,7 @@ def api_build(request):
             'image': comp.product.image.url if comp.product.image else '',
             'quantity': comp.quantity,
         })
-    total += final_price * comp.quantity
+        total += final_price * comp.quantity
     return JsonResponse({'components': result, 'total': float(total)})
 
 @require_POST
