@@ -6,6 +6,8 @@ from .models import (
     PromoCode, PromoCodeUsage, UserPromoCode
 )
 from django.utils import timezone
+from django.forms import Textarea
+from django.db import models
 # ===== ОСНОВНЫЕ МОДЕЛИ МАГАЗИНА =====
 
 @admin.register(ProductLine)

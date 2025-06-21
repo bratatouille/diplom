@@ -11,7 +11,10 @@ class HeroSlide(models.Model):
     title = models.CharField('Заголовок', max_length=200)
     subtitle = models.CharField('Подзаголовок', max_length=300)
     image = models.ImageField('Изображение', upload_to='hero_slides/')
-    link = models.URLField('Ссылка', max_length=200, blank=True)
+    button1_text = models.CharField('Текст кнопки 1', max_length=50, blank=True)
+    button1_url = models.URLField('URL кнопки 1', max_length=200, blank=True)
+    button2_text = models.CharField('Текст кнопки 2', max_length=50, blank=True)
+    button2_url = models.URLField('URL кнопки 2', max_length=200, blank=True)
     order = models.PositiveIntegerField('Порядок', default=0)
     is_active = models.BooleanField('Активен', default=True)
 

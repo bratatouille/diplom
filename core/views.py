@@ -22,12 +22,21 @@ def index(request):
     # Получаем разделы для каталога
     product_lines = ProductLine.objects.all()
 
+    # Получаем все категории
+    cart_product_ids = []
+    wishlist_product_ids = []
+    if request.user.is_authenticated:
+        cart_product_ids = list(request.user.cart_items.values_list('product_id', flat=True))
+        wishlist_product_ids = list(request.user.favorite_items.values_list('product_id', flat=True))
+
     context = {
         'slides': slides,
         'advantages': advantages,
         'popular_products': popular_products,
         'popular_categories': popular_categories,
         'product_lines': product_lines,
+        'cart_product_ids': cart_product_ids,
+        'wishlist_product_ids': wishlist_product_ids,
     }
     return render(request, 'core/index.html', context)
 

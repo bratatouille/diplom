@@ -17,7 +17,7 @@ def configurator(request):
 @require_GET
 @login_required
 def api_categories(request):
-    categories = Category.objects.all().values('id', 'name')
+    categories = Category.objects.filter(slug__in=Category.PROTECTED_SLUGS).values('id', 'name', 'slug')
     return JsonResponse({'categories': list(categories)})
 
 @require_GET
@@ -110,6 +110,7 @@ def api_products(request):
             'id': product.id,
             'name': product.name,
             'price': float(product.price),
+            'discount': float(product.discount),
             'image': product.image.url if product.image else '',
             'specs': specs,
             'is_selected': product.id in selected_product_ids,
@@ -125,18 +126,21 @@ def api_build(request):
     build, _ = PCBuild.objects.get_or_create(user=request.user)
     components = build.components.select_related('product', 'category')
     result = []
+    total = 0
     for comp in components:
+        final_price = comp.product.final_price
         result.append({
             'category_id': comp.category.id,
             'category_name': comp.category.name,
             'product_id': comp.product.id,
             'product_name': comp.product.name,
             'price': float(comp.product.price),
+            'discount': comp.product.discount,
             'image': comp.product.image.url if comp.product.image else '',
             'quantity': comp.quantity,
         })
-    total = sum(c['price'] * c['quantity'] for c in result)
-    return JsonResponse({'components': result, 'total': total})
+    total += final_price * comp.quantity
+    return JsonResponse({'components': result, 'total': float(total)})
 
 @require_POST
 @login_required
@@ -182,7 +186,7 @@ def api_build_save(request):
             'category_name': c.category.name,
             'product_id': c.product.id,
             'product_name': c.product.name,
-            'price': float(c.product.price),
+            'price': float(c.product.final_price),
             'quantity': c.quantity,
         } for c in components
     ]

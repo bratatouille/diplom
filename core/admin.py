@@ -3,9 +3,25 @@ from .models import HeroSlide, Advantage, ContactInfo, SupportTicket
 
 @admin.register(HeroSlide)
 class HeroSlideAdmin(admin.ModelAdmin):
-    list_display = ('title', 'order', 'is_active')
+    list_display = ('title', 'button1_text', 'order', 'is_active')
     list_editable = ('order', 'is_active')
     search_fields = ('title', 'subtitle')
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('title', 'subtitle', 'image')
+        }),
+        ('Кнопка 1', {
+            'fields': ('button1_text', 'button1_url'),
+            'classes': ('collapse',)
+        }),
+        ('Кнопка 2', {
+            'fields': ('button2_text', 'button2_url'),
+            'classes': ('collapse',)
+        }),
+        ('Настройки отображения', {
+            'fields': ('order', 'is_active')
+        }),
+    )
 
 @admin.register(Advantage)
 class AdvantageAdmin(admin.ModelAdmin):

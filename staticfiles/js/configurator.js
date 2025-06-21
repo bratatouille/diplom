@@ -305,6 +305,7 @@ function renderProducts(products) {
     return;
   }
   products.forEach(prod => {
+    const finalPrice = prod.discount ?   (prod.price * (1 - prod.discount / 100)) : prod.price;
     const card = document.createElement('div');
     card.className = 'flex flex-col bg-gray-100 dark:bg-[#181C27] rounded-2xl p-6 shadow relative';
     card.innerHTML = `
@@ -313,7 +314,7 @@ function renderProducts(products) {
       </div>
       <div class="flex-1 flex flex-col gap-1">
         <a href="/catalog/${prod.product_line_slug}/${prod.category_slug}/${prod.product_slug}/" class="text-lg font-bold text-gray-900 dark:text-white hover:underline" title="${prod.name}" target="_blank">${prod.name}</a>
-        <div class="text-[#7a85ff] text-base font-semibold mb-1">${prod.price} ₽</div>
+        <div class="text-[#7a85ff] text-base font-semibold mb-1"> ${finalPrice} ₽</div>
         <div class="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300 mb-1 characteristics-container">
           ${(prod.specs || []).slice(0, 4).map(s => `<span><span class="font-medium">${s.specification__name}:</span> ${s.value}${s.specification__unit ? ' ' + s.specification__unit : ''}</span>`).join('')}
         </div>
@@ -393,6 +394,7 @@ async function loadBuild() {
     return;
   }
   data.components.forEach(comp => {
+    const finalPrice = comp.discount ? comp.price * (1 - comp.discount / 100) : comp.price;
     const div = document.createElement('div');
     div.className = 'flex justify-between items-center border border-[#7a85ff] rounded-xl px-4 py-3';
     div.innerHTML = `
@@ -401,7 +403,7 @@ async function loadBuild() {
         <div class="text-base font-bold text-black dark:text-white ">${comp.product_name}</div>
       </div>
       <div class="flex flex-col items-end">
-        <span class="font-bold text-[#7a85ff] text-lg">${comp.price} ₽</span>
+        <span class="font-bold text-[#7a85ff] text-lg">${finalPrice} ₽</span>
         <button class="remove-btn text-red-500 hover:text-red-700 text-xl" title="Удалить" data-id="${comp.product_id}">&times;</button>
       </div>
     `;

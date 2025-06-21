@@ -9,9 +9,9 @@
                      aria-hidden="{% if not forloop.first %}true{% else %}false{% endif %}"
                      tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
                      style="{% if slide.image %}background-image: linear-gradient(to right, rgba(37,99,235,0.7), rgba(139,92,246,0.7)), url('{% autoescape off %}{{ slide.image.url }}{% endautoescape %}'); background-size:cover; background-position:center;{% else %}background-image: linear-gradient(to right, #2563eb, #8b5cf6);{% endif %}">
-                    <div class="flex-1 p-8">
-                        <h2 class="text-4xl font-bold mb-4">{{ slide.title|linebreaksbr }}</h2>
-                        <p class="text-lg mb-6 opacity-90">{{ slide.subtitle }}</p>
+                    <div class="flex-1 p-8 pt-16 pl-16">
+                        <h2 class="text-4xl font-bold mb-4 text-white">{{ slide.title|linebreaksbr }}</h2>
+                        <p class="text-lg mb-6 opacity-90 text-white">{{ slide.subtitle }}</p>
                         <div class="space-x-4">
                             {% if slide.button1_text %}
                             <a href="{{ slide.button1_url }}" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
@@ -56,6 +56,92 @@
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // КорзинаAdd commentMore actions
+            document.querySelectorAll('.cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productSlug = this.dataset.productSlug;
+                    const inCart = this.textContent.trim() === 'Убрать из корзины';
+                    const url = inCart ? `/cart/remove/${productSlug}/` : `/cart/add/${productSlug}/`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.textContent = inCart ? 'В корзину' : 'Убрать из корзины';
+                        }
+                    });
+                });
+            });
+            // Избранное
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productSlug = this.dataset.productSlug;
+                    const url = `/favorites/toggle/${productSlug}/`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (this.classList.contains('text-purple-500')) {
+                                this.classList.remove('text-purple-500');
+                                this.classList.add('text-black', 'dark:text-white');
+                                this.querySelector('svg').setAttribute('fill', 'none');
+                            } else {
+                                this.classList.remove('text-black', 'dark:text-white');
+                                this.classList.add('text-purple-500');
+                                this.querySelector('svg').setAttribute('fill', 'currentColor');
+                            }
+                        }
+                    });
+                });
+            });
+        
+            // Эффект смены изображения при наведении
+            document.querySelectorAll('.product-card-image').forEach(img => {
+                const mainImage = img.dataset.mainImage;
+                const secondaryImage = img.dataset.secondaryImage;
+        
+                if (secondaryImage && mainImage !== secondaryImage) {
+                    const parentLink = img.closest('a');
+                    if (parentLink) {
+                        parentLink.addEventListener('mouseenter', () => {
+                            img.src = secondaryImage;
+                        });
+                        parentLink.addEventListener('mouseleave', () => {
+                            img.src = mainImage;
+                        });
+                    }
+                }
+            });
+        });
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        </script>
 
     <!-- Готовые пк -->
     <section class="py-12 bg-[#FFDDDD] dark:bg-[#28303F]">
