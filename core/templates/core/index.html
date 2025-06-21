@@ -8,16 +8,16 @@
                 <div class="carousel-slide {% if forloop.first %}active{% endif %} absolute inset-0 flex items-center transition-opacity duration-700"
                      aria-hidden="{% if not forloop.first %}true{% else %}false{% endif %}"
                      tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
-                     style="{% if slide.image %}background-image: linear-gradient(to right, rgba(37,99,235,0.7), rgba(139,92,246,0.7)), url('{% autoescape off %}{{ slide.image.url }}{% endautoescape %}'); background-size:cover; background-position:center;{% else %}background-image: linear-gradient(to right, #2563eb, #8b5cf6);{% endif %}">
+                     style="{% if slide.image %}background-image: url('{% autoescape off %}{{ slide.image.url }}{% endautoescape %}'); background-size:cover; background-position:center;{% else %}background-image: linear-gradient(to right, #2563eb, #8b5cf6);{% endif %}">
                     <div class="flex-1 p-8 pt-16 pl-16">
                         <h2 class="text-4xl font-bold mb-4 text-white">{{ slide.title|linebreaksbr }}</h2>
                         <p class="text-lg mb-6 opacity-90 text-white">{{ slide.subtitle }}</p>
                         <div class="space-x-4">
                             {% if slide.button1_text %}
-                            <a href="{{ slide.button1_url }}" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
+                            <a href="{{ slide.button1_url }}" class="bg-blue-600 dark:bg-white text-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
                             {% endif %}
                             {% if slide.button2_text %}
-                            <a href="{{ slide.button2_url }}" class="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">{{ slide.button2_text }}</a>
+                            <a href="{{ slide.button2_url }}" class="bg-white dark:bg-transparent border border-white dark:border-white text-black dark:text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-colors">{{ slide.button2_text }}</a>
                             {% endif %}
                         </div>
                     </div>
