@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from .models import (
     PCBuild, PCBuildComponent, SavedPCBuild, CompatibilityRule,
-    CategoryPC, Computer, PrebuiltPC, PrebuiltPCComponent
+    CategoryPC, PrebuiltPC, PrebuiltPCComponent
 )
 from store.models import Product, Category
 
@@ -71,12 +71,6 @@ class PrebuiltPCComponentAdmin(admin.ModelAdmin):
 class CategoryPCAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'name', 'description')
     search_fields = ('display_name', 'description')
-
-@admin.register(Computer)
-class ComputerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'level', 'formatted_price')
-    list_filter = ('category', 'level')
-    search_fields = ('name', 'processor', 'graphics_card')
 
 @admin.register(PCBuild)
 class PCBuildAdmin(admin.ModelAdmin):

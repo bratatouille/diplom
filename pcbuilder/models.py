@@ -81,38 +81,6 @@ class CategoryPC(models.Model):
     def __str__(self):
         return self.display_name
 
-class Computer(models.Model):
-    LEVEL_CHOICES = [
-        ('start', 'Начальный уровень'),
-        ('pro', 'Оптимальный выбор'),
-        ('ultra', 'Максимальная мощность'),
-    ]
-    
-    category = models.ForeignKey(CategoryPC, on_delete=models.CASCADE, related_name='computers', verbose_name='Категория')
-    name = models.CharField('Название', max_length=100)
-    level = models.CharField('Уровень', max_length=10, choices=LEVEL_CHOICES)
-    price = models.DecimalField('Цена', max_digits=10, decimal_places=2)
-    
-    # Характеристики
-    processor = models.CharField('Процессор', max_length=100)
-    graphics_card = models.CharField('Видеокарта', max_length=100)
-    ram = models.CharField('Оперативная память', max_length=50)
-    storage = models.CharField('Накопитель', max_length=50)
-    
-    # Цвет для выделения уровня
-    level_color = models.CharField('Цвет уровня', max_length=20, default='blue-500')
-    
-    class Meta:
-        verbose_name = 'Готовый компьютер (упрощенный)'
-        verbose_name_plural = 'Готовые компьютеры (упрощенные)'
-        ordering = ['price']
-    
-    def __str__(self):
-        return f"{self.name} - {self.get_level_display()}"
-    
-    def formatted_price(self):
-        return f"{int(self.price):,}".replace(',', ' ') + ' ₽'
-
 # Добавим модели для готовых сборок
 class PrebuiltPC(models.Model):
     LEVEL_CHOICES = [

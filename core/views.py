@@ -80,7 +80,7 @@ def payments(request):
 def delivery(request):
     return render(request, 'core/delivery.html')
 from store.models import Product
-from pcbuilder.models import CategoryPC, Computer, PrebuiltPC
+from pcbuilder.models import CategoryPC, PrebuiltPC
 
 def computer_catalog(request):
     """Каталог готовых компьютеров"""

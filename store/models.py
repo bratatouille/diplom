@@ -172,7 +172,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     """Галерея изображений для товара"""
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
     image = models.ImageField('Изображение', upload_to='products/gallery/')
     alt_text = models.CharField('Описание изображения', max_length=255, blank=True, default='')
     order = models.PositiveIntegerField('Порядок', default=0, help_text='Для сортировки изображений')
@@ -188,7 +188,7 @@ class ProductImage(models.Model):
 
 class ProductSpec(models.Model):
     """Значения характеристик для товаров"""
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='specs')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='specs', verbose_name='Товар')
     specification = models.ForeignKey(Specification, on_delete=models.CASCADE)
     value = models.CharField('Значение', max_length=100)
 
@@ -370,8 +370,8 @@ class PromoCode(models.Model):
 
 class PromoCodeUsage(models.Model):
     """История использования промокодов"""
-    promocode = models.ForeignKey(PromoCode, on_delete=models.CASCADE, related_name='usages')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='promocode_usages')
+    promocode = models.ForeignKey(PromoCode, on_delete=models.CASCADE, related_name='usages', verbose_name='Промокод')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='promocode_usages', verbose_name='Пользователь')
     order_id = models.PositiveIntegerField('ID заказа', null=True, blank=True)  # Связь с заказом
     discount_amount = models.DecimalField('Размер скидки', max_digits=10, decimal_places=2)
     order_amount = models.DecimalField('Сумма заказа', max_digits=10, decimal_places=2)
@@ -388,8 +388,8 @@ class PromoCodeUsage(models.Model):
 
 class UserPromoCode(models.Model):
     """Персональные промокоды пользователей"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='personal_promocodes')
-    promocode = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='personal_promocodes', verbose_name='Пользователь')
+    promocode = models.ForeignKey(PromoCode, on_delete=models.CASCADE, verbose_name='Промокод')
     assigned_at = models.DateTimeField('Дата назначения', auto_now_add=True)
     assigned_by = models.ForeignKey(
         User, 
@@ -397,7 +397,8 @@ class UserPromoCode(models.Model):
         null=True, 
         blank=True,
         related_name='assigned_promocodes',
-        help_text='Кто назначил промокод'
+        help_text='Кто назначил промокод',
+        verbose_name='Кто назначает'
     )
     is_notified = models.BooleanField('Уведомлен', default=False)
 
