@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'pcbuilder',
     'order',
     'core',
+    #'import_export',
 ]
 TAILWIND_APP_NAME = 'theme'
 MIDDLEWARE = [

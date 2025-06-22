@@ -34,6 +34,7 @@ class AdvantageAdmin(admin.ModelAdmin):
 class ContactInfoAdmin(admin.ModelAdmin):
     list_display = ('address', 'phone', 'email', 'schedule')
 
+
 @admin.register(SupportTicket)
 class SupportTicketAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'topic', 'status', 'created_at')

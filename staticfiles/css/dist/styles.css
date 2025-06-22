@@ -784,11 +784,6 @@
     margin-inline-start: calc(calc(var(--spacing) * 3) * var(--tw-space-x-reverse));
     margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));
   }
-  :where(.space-x-4 > :not(:last-child)) {
-    --tw-space-x-reverse: 0;
-    margin-inline-start: calc(calc(var(--spacing) * 4) * var(--tw-space-x-reverse));
-    margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
-  }
   .truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -982,9 +977,6 @@
   }
   .bg-green-500 {
     background-color: var(--color-green-500);
-  }
-  .bg-green-600 {
-    background-color: var(--color-green-600);
   }
   .bg-green-700 {
     background-color: var(--color-green-700);
@@ -1244,6 +1236,9 @@
   .tracking-tight {
     --tw-tracking: var(--tracking-tight);
     letter-spacing: var(--tracking-tight);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .text-\[\#4b5563\] {
     color: #4b5563;
@@ -1516,11 +1511,6 @@
     }
   }
   @media (hover: hover) {
-    .hover\:bg-green-700:hover {
-      background-color: var(--color-green-700);
-    }
-  }
-  @media (hover: hover) {
     .hover\:bg-red-100:hover {
       background-color: var(--color-red-100);
     }
@@ -1604,9 +1594,6 @@
   }
   .focus\:ring-blue-500:focus {
     --tw-ring-color: var(--color-blue-500);
-  }
-  .focus\:ring-green-500:focus {
-    --tw-ring-color: var(--color-green-500);
   }
   .focus\:ring-red-500:focus {
     --tw-ring-color: var(--color-red-500);

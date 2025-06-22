@@ -7,7 +7,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('core', '0002_contactinfo_alter_heroslide_options_and_more'),
-    ]
+
+  ]
 
     operations = [
         migrations.RemoveField(

@@ -29,7 +29,8 @@ class Category(models.Model):
     product_line = models.ForeignKey(
         ProductLine,
         on_delete=models.CASCADE,
-        related_name='categories'
+        related_name='categories',
+        verbose_name='Раздел'
     )
     name = models.CharField('Название', max_length=100)
     slug = models.SlugField('URL', max_length=100, unique=True)
@@ -74,7 +75,7 @@ class Specification(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name='specifications'
+        related_name='specifications',
     )
     name = models.CharField('Название', max_length=100)
     unit = models.CharField('Единица измерения', max_length=20, blank=True)
@@ -92,7 +93,8 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.PROTECT,
-        related_name='products'
+        related_name='products',
+        verbose_name='Категория'
     )
     name = models.CharField('Название', max_length=200)
     slug = models.SlugField('URL', max_length=200, unique=True)
@@ -189,7 +191,7 @@ class ProductImage(models.Model):
 class ProductSpec(models.Model):
     """Значения характеристик для товаров"""
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='specs', verbose_name='Товар')
-    specification = models.ForeignKey(Specification, on_delete=models.CASCADE)
+    specification = models.ForeignKey(Specification, on_delete=models.CASCADE, verbose_name='Характеристика')
     value = models.CharField('Значение', max_length=100)
 
     class Meta:

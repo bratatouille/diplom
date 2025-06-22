@@ -2,14 +2,14 @@
 
 // --- SVG-иконки для sidebar ---
 const CATEGORY_ICONS = {
-  'Видеокарты': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="7.5" cy="12" r="1.5"/><circle cx="16.5" cy="12" r="1.5"/></svg>`,
-  'Процессоры': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>`,
-  'Материнские платы': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10v10H7z"/></svg>`,
-  'Накопители': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M8 11h8v2H8z"/></svg>`,
-  'Корпуса': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6"/></svg>`,
-  'Оперативная память': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 10h2v4H7zM15 10h2v4h-2z"/></svg>`,
-  'Системы охлаждения': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M6.34 17.66l-1.41 1.41m12.02 0l-1.41-1.41M6.34 6.34L4.93 4.93"/></svg>`,
-  'Блоки питания': `<svg class="w-6 h-6 mr-2 text-[#7a85ff] dark:text-[#7a85ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h2v2H7zM15 12h2v2h-2z"/></svg>`,
+  'Видеокарты': `<img src="/media/card.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Процессоры': `<img src="/media/cpu.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Материнские платы': `<img src="/media/mother.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Накопители': `<img src="/media/ssd.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Корпуса': `<img src="/media/body.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Оперативная память': `<img src="/media/ram.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Системы охлаждения': `<img src="/media/cool.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
+  'Блоки питания': `<img src="/media/psy.png" alt="Видеокарта" class="w-6 h-6 mr-2" style="object-fit:contain;">`,
 };
 
 function showToast(message, type = 'success') {
@@ -64,7 +64,7 @@ async function loadCategories() {
     const li = document.createElement('li');
     li.innerHTML = `<button class="w-full flex items-center px-4 py-3 rounded-xl transition-colors font-medium text-lg ${selectedCategoryId === cat.id ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-[#23283a]'}" data-id="${cat.id}">
       ${(CATEGORY_ICONS[cat.name] || '<span class=\'w-6 h-6 mr-2\'>🖥️</span>')}
-      <span>${cat.name}</span>
+      <span class="whitespace-nowrap">${cat.name}</span>
     </button>`;
     li.querySelector('button').onclick = () => {
       selectedCategoryId = cat.id;

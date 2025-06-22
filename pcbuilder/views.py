@@ -18,7 +18,8 @@ def configurator(request):
 @login_required
 def api_categories(request):
     categories = Category.objects.filter(slug__in=Category.PROTECTED_SLUGS).values('id', 'name', 'slug')
-    return JsonResponse({'categories': list(categories)})
+    categories_data = sorted(categories, key=lambda x: x['id'])
+    return JsonResponse({'categories': list(categories_data)})
 
 @require_GET
 @login_required
