@@ -983,6 +983,9 @@
   .bg-green-500 {
     background-color: var(--color-green-500);
   }
+  .bg-green-600 {
+    background-color: var(--color-green-600);
+  }
   .bg-green-700 {
     background-color: var(--color-green-700);
   }
@@ -1164,17 +1167,8 @@
   .pb-10 {
     padding-bottom: calc(var(--spacing) * 10);
   }
-  .pl-1 {
-    padding-left: calc(var(--spacing) * 1);
-  }
-  .pl-14 {
-    padding-left: calc(var(--spacing) * 14);
-  }
   .pl-16 {
     padding-left: calc(var(--spacing) * 16);
-  }
-  .pl-24 {
-    padding-left: calc(var(--spacing) * 24);
   }
   .pl-\[0\.5rem\] {
     padding-left: 0.5rem;
@@ -1522,6 +1516,11 @@
     }
   }
   @media (hover: hover) {
+    .hover\:bg-green-700:hover {
+      background-color: var(--color-green-700);
+    }
+  }
+  @media (hover: hover) {
     .hover\:bg-red-100:hover {
       background-color: var(--color-red-100);
     }
@@ -1547,13 +1546,13 @@
     }
   }
   @media (hover: hover) {
-    .hover\:text-blue-500:hover {
-      color: var(--color-blue-500);
+    .hover\:text-black:hover {
+      color: var(--color-black);
     }
   }
   @media (hover: hover) {
-    .hover\:text-blue-600:hover {
-      color: var(--color-blue-600);
+    .hover\:text-blue-500:hover {
+      color: var(--color-blue-500);
     }
   }
   @media (hover: hover) {
@@ -1605,6 +1604,9 @@
   }
   .focus\:ring-blue-500:focus {
     --tw-ring-color: var(--color-blue-500);
+  }
+  .focus\:ring-green-500:focus {
+    --tw-ring-color: var(--color-green-500);
   }
   .focus\:ring-red-500:focus {
     --tw-ring-color: var(--color-red-500);
@@ -2074,6 +2076,11 @@
     }
   }
   @media (hover: hover) {
+    .dark\:hover\:bg-gray-100:where(.dark, .dark *):hover {
+      background-color: var(--color-gray-100);
+    }
+  }
+  @media (hover: hover) {
     .dark\:hover\:bg-gray-500:where(.dark, .dark *):hover {
       background-color: var(--color-gray-500);
     }
@@ -2081,6 +2088,16 @@
   @media (hover: hover) {
     .dark\:hover\:bg-red-900:where(.dark, .dark *):hover {
       background-color: var(--color-red-900);
+    }
+  }
+  @media (hover: hover) {
+    .dark\:hover\:bg-white\/10:where(.dark, .dark *):hover {
+      background-color: color-mix(in srgb, #fff 10%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .dark\:hover\:bg-white\/10:where(.dark, .dark *):hover {
+        background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+      }
     }
   }
   @media (hover: hover) {
@@ -2096,6 +2113,11 @@
   @media (hover: hover) {
     .dark\:hover\:text-gray-200:where(.dark, .dark *):hover {
       color: var(--color-gray-200);
+    }
+  }
+  @media (hover: hover) {
+    .dark\:hover\:text-white:where(.dark, .dark *):hover {
+      color: var(--color-white);
     }
   }
   .dark\:focus\:ring-offset-\[\#28303F\]:where(.dark, .dark *):focus {

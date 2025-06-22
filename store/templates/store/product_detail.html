@@ -78,12 +78,15 @@
       </div>
       <div class="flex items-center gap-4 mb-2">
         <span class="flex items-center gap-2 text-black dark:text-white text-base">
-           {% if product.stock %}  
+           {% if product.stock %}
           <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
-          В наличии: {{ product.stock }} шт. 
-        </span>
+          В наличии: {{ product.stock }} шт.
+        {% else %}
+          <span class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+          <span class="text-red-500">Нет в наличии</span>
         {% endif %}
-        <button type="button" class="cart-btn bg-[#7a85ff] hover:bg-[#4b1bb3] text-white py-2 rounded-[8px] text-base font-semibold transition-colors w-[200px] max-w-full sm:w-[200px]" data-product-slug="{{ product.slug }}">
+        </span>
+        <button type="button" class="cart-btn bg-[#7a85ff] hover:bg-[#4b1bb3] text-white py-2 rounded-[8px] text-base font-semibold transition-colors w-[200px] max-w-full sm:w-[200px]" data-product-slug="{{ product.slug }}" {% if not product.stock %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>
           {% if product.id in cart_product_ids %}Убрать из корзины{% else %}В корзину{% endif %}
         </button>
         <button type="button" class="wishlist-btn bg-transparent border-0 text-2xl rounded-full p-2 {% if product.id in wishlist_product_ids %}text-purple-500{% else %}text-black dark:text-white{% endif %} hover:text-[#7a85ff] transition relative group" data-product-slug="{{ product.slug }}" title="Добавить в избранное">

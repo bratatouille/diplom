@@ -110,7 +110,7 @@ class ProductAdmin(admin.ModelAdmin):
         'stock', 'stock_status', 'image_preview'
     )
     list_filter = ('is_popular', 'category', 'discount', 'category__product_line')
-    search_fields = ('name', 'description', 'meta_title', 'meta_description')
+    search_fields = ('name', 'description')
     prepopulated_fields = {"slug": ("name",)}
     inlines = [ProductImageInline, ProductSpecInline]
     readonly_fields = ('image_preview', 'final_price_display')
@@ -128,10 +128,6 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         ('Изображения', {
             'fields': ('image', 'image_preview'),
-            'classes': ('collapse',)
-        }),
-        ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
             'classes': ('collapse',)
         }),
     )

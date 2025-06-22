@@ -12,7 +12,7 @@
                     <div class="flex-1 p-8 pt-16 pl-16">
                         <h2 class="text-4xl font-bold mb-4 text-white">{{ slide.title|linebreaksbr }}</h2>
                         <p class="text-lg mb-6 opacity-90 text-white">{{ slide.subtitle }}</p>
-                        <div class="space-x-4">
+                        <div class="flex flex-wrap gap-4">
                             {% if slide.button1_text %}
                             <a href="{{ slide.button1_url }}" class="bg-blue-600 dark:bg-white text-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
                             {% endif %}
@@ -149,9 +149,9 @@
             <div class="flex flex-col lg:flex-row items-center gap-8">
                 <div class="flex-1">
                     <div class="grid grid-cols-3 gap-4">
-                        <img src="https://nemifist.ru/image/cache/catalog/image/catalog/front-menu-cards/card-2.webp" alt="Картинка ПК1" class="w-full rounded-lg">
-                        <img src="https://ae04.alicdn.com/kf/S889cbcdc2ab84258bb4c5bb78bf68c3an.jpg_480x480.jpg" alt="Картинка ПК2" class="w-full rounded-lg">
-                        <img src="https://static.vecteezy.com/system/resources/previews/048/412/757/non_2x/modern-gaming-pc-isolated-on-transparent-free-png.png" alt="Картинка ПК3" class="w-full rounded-lg">
+                        <img src="/media/pc1.png" alt="Картинка ПК1" class="w-full rounded-lg">
+                        <img src="/media/pc2.webp" alt="Картинка ПК2" class="w-full rounded-lg">
+                        <img src="/media/pc3.webp" alt="Картинка ПК3" class="w-full rounded-lg">
                     </div>
                 </div>
                 <div class="flex-1">
@@ -173,7 +173,7 @@
                     <button class="bg-white text-[#7a85ff] hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'pcbuilder:pcbuilder' %}">СОБРАТЬ ПК</a></button>
                 </div>
                 <div class="flex-1">
-                    <img src="https://shop.proskill.kz/wp-content/uploads/2020/09/pc_0-e1599200559537.png" alt="Картинка конфигуратора" class="w-full rounded-lg">
+                    <img src="/media/conf.png" alt="Картинка конфигуратора" class="w-full rounded-lg">
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@
                     <p class="text-[#b0b0b0] dark:text-[#7a8599] mb-6">Процессоры всех самых современных марок-производителей, видеокарты, материнские платы и многое другое</p>
                     <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:product_line_detail' 'komplektuyushchie' %}">КУПИТЬ СЕЙЧАС</a></button>
                     <div class="mt-6">
-                        <img src="https://www.hardwareluxx.de/images/cdn02/uploads/2023/Jul/soft_network_jj/mainboard_faq_2023_002_1920px.png" alt="Картинка материнская плата" class="w-full rounded-lg">
+                        <img src="/media/komp.png" alt="Картинка материнская плата" class="w-full rounded-lg">
                     </div>
                 </div>
                 <div class="text-center">
@@ -196,7 +196,7 @@
                     <p class="text-[#b0b0b0] dark:text-[#7a8599] mb-6">Вооружитесь с самым лучшим в мире оружием геймера и аксессуарами: мониторы, клавиатуры и многое другое</p>
                     <button class="bg-[#7a85ff] hover:bg-[#4b1bb3] text-white px-6 py-3 rounded-lg font-semibold transition-colors"><a href="{% url 'store:product_line_detail' 'pereferiya' %}">КУПИТЬ СЕЙЧАС</a></button>
                     <div class="mt-6">
-                        <img src="https://www.jetaccess.ru/upload/resizer2/8/aa6/aa65f2e4a81d9df7633465f52ccbc746.png" alt="Картинка периферия" class="w-full rounded-lg">
+                        <img src="/media/perf.png" alt="Картинка периферия" class="w-full rounded-lg">
                     </div>
                 </div>
             </div>
@@ -255,7 +255,7 @@
         .carousel-slide.active { opacity: 1; pointer-events: auto; z-index: 10; }
     </style>
     <script>
-        // Carousel functionality
+        // Карусель слайдов
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
@@ -293,10 +293,10 @@
         function stopCarousel() {
             clearInterval(carouselInterval);
         }
-        // Init
+        // Иницализация
         showSlide(currentSlide);
         startCarousel();
-        // Dot navigation
+        // Навигация
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
                 showSlide(index);
@@ -304,7 +304,7 @@
                 startCarousel();
             });
         });
-        // Arrow navigation
+        // Стеркли
         prevBtn.addEventListener('click', () => {
             prevSlide();
             stopCarousel();
@@ -316,7 +316,7 @@
             startCarousel();
         });
         
-        // Product card hover effects
+        // Эффет появления
         document.querySelectorAll('.product-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
@@ -329,7 +329,7 @@
             });
         });
         
-        // Smooth scrolling for navigation links
+        // Плавный скролингн
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -342,10 +342,10 @@
             });
         });
         
-        // Add loading animation to buttons
+        
      
         
-        // Newsletter form handling (улучшено)
+        // Рассылка
         const newsletterForm = document.getElementById('newsletter-form');
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', function(e) {
@@ -355,17 +355,41 @@
                 const successMsg = document.getElementById('newsletter-success');
                 const errorMsg = document.getElementById('newsletter-error');
                 if (email && email.includes('@') && email.includes('.') && email.length > 5) {
-                    successMsg.classList.remove('hidden');
-                    errorMsg.classList.add('hidden');
-                    input.value = '';
+                    // AJAX-запрос на сервер
+                    fetch('/send_promocode/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: 'email=' + encodeURIComponent(email)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            successMsg.classList.remove('hidden');
+                            errorMsg.classList.add('hidden');
+                            input.value = '';
+                        } else {
+                            errorMsg.textContent = data.error || 'Ошибка отправки.';
+                            errorMsg.classList.remove('hidden');
+                            successMsg.classList.add('hidden');
+                        }
+                    })
+                    .catch(() => {
+                        errorMsg.textContent = 'Ошибка отправки.';
+                        errorMsg.classList.remove('hidden');
+                        successMsg.classList.add('hidden');
+                    });
                 } else {
+                    errorMsg.textContent = 'Пожалуйста, введите корректный email адрес.';
                     errorMsg.classList.remove('hidden');
                     successMsg.classList.add('hidden');
                 }
             });
         }
         
-        // Intersection Observer for animations
+        // Intersection Observer для анимаций
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -380,7 +404,7 @@
             });
         }, observerOptions);
         
-        // Observe all sections for scroll animations
+        // Следим за всеми секциями для анимаций при прокрутке
         document.querySelectorAll('section').forEach(section => {
             section.style.opacity = '0';
             section.style.transform = 'translateY(30px)';
@@ -388,7 +412,7 @@
             observer.observe(section);
         });
         
-        // Initialize first section as visible
+        // Первая секция сразу видима
         document.querySelector('section').style.opacity = '1';
         document.querySelector('section').style.transform = 'translateY(0)';
     </script>

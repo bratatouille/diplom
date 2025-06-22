@@ -126,8 +126,6 @@ class Product(models.Model):
         default='',
         help_text='Можно использовать HTML-теги для форматирования текста (например, <ul>, <li>, <b>, <h3> и т.д.)'
     )
-    meta_title = models.CharField('SEO Title', max_length=255, blank=True, default='', help_text='Заголовок для SEO (meta title)')
-    meta_description = models.CharField('SEO Description', max_length=500, blank=True, default='', help_text='Описание для SEO (meta description)')
     image = models.ImageField('Фото', upload_to='products/', blank=True, null=True)
 
     class Meta:
@@ -363,7 +361,7 @@ class PromoCode(models.Model):
             discount = order_amount * (self.discount_value / 100)
             if self.max_discount_amount:
                 discount = min(discount, self.max_discount_amount)
-        else:  # fixed
+        else:  # фикс
             discount = self.discount_value
         
         # Скидка не может быть больше суммы заказа

@@ -119,12 +119,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#EMAIL_HOST = 'smtp.yandex.ru'
-#EMAIL_PORT = 465
-#EMAIL_USE_TLS = False
-#EMAIL_USE_SSL = True
-#EMAIL_HOST_USER = 'bratatouille1@yandex.ru'
-#EMAIL_HOST_PASSWORD = 'oxhdjpbtttdbtsys'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'bratatouille1@yandex.ru'
+EMAIL_HOST_PASSWORD = 'oxhdjpbtttdbtsys'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #oxhdjpbtttdbtsys
 # Internationalization

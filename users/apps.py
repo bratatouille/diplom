@@ -24,6 +24,7 @@ def create_superuser(sender, **kwargs):
 class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'users'
+    verbose_name = 'Пользователи'
 
     def ready(self):
         post_migrate.connect(create_superuser, sender=self)

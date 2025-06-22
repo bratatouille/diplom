@@ -510,11 +510,11 @@ function showPromocodesError(message) {
 // Функция форматирования даты
 function formatDate(dateString) {
     if (!dateString) {
-        return 'бессрочно';
+        return '';
     }
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-        return 'бессрочно';
+        return '';
     }
     return date.toLocaleDateString('ru-RU', {
         day: '2-digit',

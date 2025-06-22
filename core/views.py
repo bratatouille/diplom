@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from store.models import Product, Category, ProductLine
 from django.db.models import Count
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+import re
 
 # Create your views here.
 def index(request):
@@ -180,3 +183,22 @@ def get_computers_by_category(request, category_name):
             'success': False,
             'error': 'Категория не найдена'
         })
+
+def send_promocode_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        # Простая валидация email
+        if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return JsonResponse({'success': False, 'error': 'Некорректный email.'})
+        try:
+            send_mail(
+                subject='Ваш промокод от TechStore',
+                message='Спасибо за подписку на рассылку, ваш промокод - 4444',
+                from_email=None,  # Использует DEFAULT_FROM_EMAIL
+                recipient_list=[email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Только POST'})
