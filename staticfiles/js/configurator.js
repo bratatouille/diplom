@@ -323,10 +323,20 @@ function renderProducts(products) {
         border border-[#222222] hover:bg-[#e5e7fa] hover:border-gray-500 hover:text-[#7a85ff] text-[#222222] 
         dark:bg-transparent dark:text-[#FFFFFF] dark:border-[#FFFFFF] dark:hover:border-gray-300 dark:hover:text-[#7a85ff] dark:hover:bg-[#23283a]
         cursor-pointer focus:outline-none">Характеристики</button>` : ''}
-      <button class="w-full px-6 py-2 rounded-xl text-base font-bold transition-colors select-product-btn mt-4 ${prod.is_selected ? 'bg-red-500 hover:bg-red-700 text-white' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white'}" data-id="${prod.id}">${prod.is_selected ? 'Убрать' : 'Выбрать'}</button>
+      <button 
+        class="w-full px-6 py-2 rounded-xl text-base font-bold transition-colors select-product-btn mt-4
+          ${prod.stock === 0 ? 'bg-gray-400 text-white cursor-not-allowed opacity-60' : (prod.is_selected ? 'bg-red-500 hover:bg-red-700 text-white' : 'bg-[#7a85ff] hover:bg-[#4b1bb3] text-white')}"
+        data-id="${prod.id}"
+        ${prod.stock === 0 ? 'disabled' : ''}
+      >
+        ${prod.stock === 0 ? 'Нет в наличии' : (prod.is_selected ? 'Убрать' : 'Выбрать')}
+      </button>
     `;
     const selectBtn = card.querySelector('.select-product-btn');
-    if (prod.is_selected) {
+    if (prod.stock === 0) {
+      selectBtn.disabled = true;
+      selectBtn.onclick = null;
+    } else if (prod.is_selected) {
       selectBtn.onclick = () => removeFromBuild(prod.id);
     } else {
       selectBtn.onclick = () => addToBuild(prod.id);

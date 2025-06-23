@@ -118,6 +118,7 @@ def api_products(request):
             'product_line_slug': product.category.product_line.slug,
             'category_slug': product.category.slug,
             'product_slug': product.slug,
+            'stock': product.stock,
         })
     
     return JsonResponse({'products': result})
