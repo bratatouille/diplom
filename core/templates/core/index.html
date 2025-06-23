@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
    <!-- Слайдеры -->
-    <section class="relative py-12">
+    <section class="relative py-6 md:py-12">
         <div class="container mx-auto px-4 relative">
-            <div class="carousel-container relative h-80 rounded-xl overflow-hidden">
+            <div class="carousel-container relative h-[300px] sm:h-[350px] md:h-80 rounded-xl overflow-hidden">
                 {% for slide in slides %}
                 <div class="carousel-slide {% if forloop.first %}active{% endif %} absolute inset-0 flex items-center transition-opacity duration-700"
                      aria-hidden="{% if not forloop.first %}true{% else %}false{% endif %}"
                      tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
                      style="{% if slide.image %}background-image: url('{% autoescape off %}{{ slide.image.url }}{% endautoescape %}'); background-size:cover; background-position:center;{% else %}background-image: linear-gradient(to right, #2563eb, #8b5cf6);{% endif %}">
-                    <div class="flex-1 p-8 pt-16 pl-16">
-                        <h2 class="text-4xl font-bold mb-4 text-white">{{ slide.title|linebreaksbr }}</h2>
-                        <p class="text-lg mb-6 opacity-90 text-white">{{ slide.subtitle }}</p>
-                        <div class="flex flex-wrap gap-4">
+                    <div class="relative z-10 w-full px-4 md:px-8 lg:px-16">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-4 text-white max-w-[90%] md:max-w-[70%] leading-tight">{{ slide.title|linebreaksbr }}</h2>
+                        <p class="text-base sm:text-lg mb-4 md:mb-6 opacity-90 text-white max-w-[90%] md:max-w-[60%]">{{ slide.subtitle }}</p>
+                        <div class="flex flex-wrap gap-3 md:gap-4">
                             {% if slide.button1_text %}
-                            <a href="{{ slide.button1_url }}" class="bg-blue-600 dark:bg-white text-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
+                            <a href="{{ slide.button1_url }}" class="bg-blue-600 dark:bg-white text-white dark:text-black px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-blue-700 dark:hover:bg-gray-100 transition-colors">{{ slide.button1_text }}</a>
                             {% endif %}
                             {% if slide.button2_text %}
-                            <a href="{{ slide.button2_url }}" class="bg-white dark:bg-transparent border border-white dark:border-white text-black dark:text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-colors">{{ slide.button2_text }}</a>
+                            <a href="{{ slide.button2_url }}" class="bg-white dark:bg-transparent border border-white dark:border-white text-black dark:text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-white/10 hover:text-black dark:hover:text-white transition-colors">{{ slide.button2_text }}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -27,18 +27,18 @@
                 </div>
                 {% endfor %}
                 <!-- Стрелки -->
-                <button class="carousel-arrow left-2 top-1/2 -translate-y-1/2 absolute z-20 bg-white/70 hover:bg-white text-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow transition" id="carousel-prev" aria-label="Предыдущий слайд">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                <button class="carousel-arrow left-2 top-1/2 -translate-y-1/2 absolute z-20 bg-white/70 hover:bg-white text-blue-600 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center shadow transition" id="carousel-prev" aria-label="Предыдущий слайд">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <button class="carousel-arrow right-2 top-1/2 -translate-y-1/2 absolute z-20 bg-white/70 hover:bg-white text-blue-600 rounded-full w-10 h-10 flex items-center justify-center shadow transition" id="carousel-next" aria-label="Следующий слайд">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <button class="carousel-arrow right-2 top-1/2 -translate-y-1/2 absolute z-20 bg-white/70 hover:bg-white text-blue-600 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center shadow transition" id="carousel-next" aria-label="Следующий слайд">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                 </button>
             </div>
             <!-- Навигация по кружочкам -->
-            <div class="flex justify-center space-x-2 mt-6">
-                <button class="carousel-dot w-3 h-3 rounded-full bg-blue-500 transition-all duration-300" data-slide="0" aria-label="Слайд 1"></button>
-                <button class="carousel-dot w-3 h-3 rounded-full bg-gray-500 hover:bg-gray-400 transition-all duration-300" data-slide="1" aria-label="Слайд 2"></button>
-                <button class="carousel-dot w-3 h-3 rounded-full bg-gray-500 hover:bg-gray-400 transition-all duration-300" data-slide="2" aria-label="Слайд 3"></button>
+            <div class="flex justify-center space-x-2 mt-4 md:mt-6">
+                <button class="carousel-dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-blue-500 transition-all duration-300" data-slide="0" aria-label="Слайд 1"></button>
+                <button class="carousel-dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-gray-500 hover:bg-gray-400 transition-all duration-300" data-slide="1" aria-label="Слайд 2"></button>
+                <button class="carousel-dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-gray-500 hover:bg-gray-400 transition-all duration-300" data-slide="2" aria-label="Слайд 3"></button>
             </div>
         </div>
     </section>
